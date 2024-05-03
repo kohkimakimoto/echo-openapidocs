@@ -2,15 +2,16 @@ package main
 
 import (
 	_ "embed"
-	"github.com/kohkimakimoto/echo-openapidocs"
-	"github.com/labstack/echo/v4"
 	"log"
+
+	openapidocs "github.com/kohkimakimoto/echo-openapidocs"
+	"github.com/labstack/echo/v4"
 )
 
 // OpenAPISpecGithub is the OpenAPI specifications for GitHub v3 REST API.
 // I got the OpenAPI specifications from https://github.com/github/rest-api-description
 //
-//go:embed ghes-3.0.yaml
+//go:embed api.github.com.yaml
 var OpenAPISpecGithub string
 
 func main() {
