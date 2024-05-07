@@ -48,12 +48,12 @@ You can also see other examples in [examples/main.go](examples/main.go) file.
 
 ## Supported Documentation Generators
 
-### Spotlight Elements
+### Stoplight Elements
 
-[Spotlight Elements](https://github.com/stoplightio/elements): Build beautiful, interactive API Docs with embeddable React or Web Components, powered by OpenAPI and Markdown.
+[Stoplight Elements](https://github.com/stoplightio/elements): Build beautiful, interactive API Docs with embeddable React or Web Components, powered by OpenAPI and Markdown.
 
 ```go
-// Register the Spotlight Elements documentation with OpenAPI Spec url.
+// Register the Stoplight Elements documentation with OpenAPI Spec url.
 openapidocs.ElementsDocuments(e, "/docs", openapidocs.ElementsConfig{
 	// The following is the example for generating the OpenAI API documentation.
 	// You can replace the SpecUrl with your OpenAPI Spec url.
@@ -72,7 +72,7 @@ You can also specify the OpenAPI Spec as a string.
 //go:embed openai-openapi.yaml
 var OpenAIAPISpec string
 
-// Register the Spotlight Elements documentation with OpenAPI Spec string.
+// Register the Stoplight Elements documentation with OpenAPI Spec string.
 openapidocs.ElementsDocuments(e, "/docs", openapidocs.ElementsConfig{
 	Spec: OpenAIAPISpec,
 })
