@@ -1,7 +1,6 @@
 # Echo OpenAPI Docs
 
 [![test](https://github.com/kohkimakimoto/echo-openapidocs/actions/workflows/test.yml/badge.svg)](https://github.com/kohkimakimoto/echo-openapidocs/actions/workflows/test.yml)
-
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/kohkimakimoto/echo-openapidocs/blob/master/LICENSE)
 [![Go Reference](https://pkg.go.dev/badge/github.com/kohkimakimoto/echo-openapidocs.svg)](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs)
 
