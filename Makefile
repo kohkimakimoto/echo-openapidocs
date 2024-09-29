@@ -29,7 +29,7 @@ setup: ## Setup development environment
 		go install github.com/golang/mock/mockgen@latest && \
 		go install github.com/axw/gocov/gocov@latest && \
 		go install github.com/matm/gocov-html/cmd/gocov-html@latest
-	@export GOPATH=$(CURDIR)/.dev/gopath && go clean -modcache
+	@export GOPATH=$(CURDIR)/.dev/gopath && go clean -modcache && rm -rf $(CURDIR)/.dev/gopath/pkg
 
 .PHONY: clean
 clean: ## Clean up development environment
