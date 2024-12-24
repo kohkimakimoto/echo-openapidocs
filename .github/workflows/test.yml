@@ -1,11 +1,10 @@
 name: test
-
 on:
   workflow_dispatch:
-  push:
+  pull_request:
     branches:
       - main
-  pull_request:
+  push:
     branches:
       - main
 
@@ -17,7 +16,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version: stable
-          cache: true
+          go-version-file: go.mod
       - run: make setup
       - run: make test
