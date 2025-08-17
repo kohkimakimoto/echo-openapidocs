@@ -25,8 +25,6 @@ setup: ## Setup development environment
 	@echo "==> Setting up development environment..."
 	@mkdir -p $(CURDIR)/.dev/go-tools
 	@export GOPATH=$(CURDIR)/.dev/go-tools && \
-		go install honnef.co/go/tools/cmd/staticcheck@latest && \
-		go install github.com/golang/mock/mockgen@latest && \
 		go install github.com/axw/gocov/gocov@latest && \
 		go install github.com/matm/gocov-html/cmd/gocov-html@latest
 	@export GOPATH=$(CURDIR)/.dev/go-tools && go clean -modcache && rm -rf $(CURDIR)/.dev/go-tools/pkg
@@ -43,30 +41,26 @@ clean: ## Clean up development environment
 format: ## Format source code
 	@go fmt ./...
 
-.PHONY: lint
-lint: ## Lint source code
-	@staticcheck ./...
-
 .PHONY: test
 test: ## Run tests
 	@go test -race -timeout 30m ./...
 
-.PHONY: test/short
-test/short: ## Run short tests
+.PHONY: test-short
+test-short: ## Run short tests
 	@go test -short -race -timeout 30m ./...
 
-.PHONY: test/verbos
-test/verbose: ## Run tests with verbose outputting
+.PHONY: test-verbose
+test-verbose: ## Run tests with verbose outputting
 	@go test -race -timeout 30m -v ./...
 
-.PHONY: test/cover
-test/cover: ## Run tests with coverage report
+.PHONY: test-cover
+test-cover: ## Run tests with coverage report
 	@mkdir -p $(CURDIR)/.dev/test
 	@go test -race -coverpkg=./... -coverprofile=$(CURDIR)/.dev/test/coverage.out ./...
 	@gocov convert $(CURDIR)/.dev/test/coverage.out | gocov-html > $(CURDIR)/.dev/test/coverage.html
 
-.PHONY: open/coverage
-open/coverage: ## Open coverage report
+.PHONY: test-cover-open
+test-cover-open: ## Open coverage report in browser
 	@open $(CURDIR)/.dev/test/coverage.html
 
 
