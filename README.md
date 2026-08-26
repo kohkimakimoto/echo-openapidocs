@@ -180,6 +180,22 @@ openapidocs.SwaggerUIDocuments(e, "/docs", openapidocs.SwaggerUIConfig{
 The `SwaggerUIDocuments` function takes a configuration from the `SwaggerUIConfig` struct.
 For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v4#SwaggerUIConfig).
 
+By default, Swagger UI JS/CSS are loaded from the CDN. To serve them from your application binary instead, import the optional `embedded/swaggerui` subpackage:
+
+```go
+import (
+	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
+	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/swaggerui"
+)
+
+// Bundled assets are served under /docs/_assets/*
+swaggerui.Documents(e, "/docs", openapidocs.SwaggerUIConfig{
+	SpecUrl: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
+})
+```
+
+Importing `embedded/swaggerui` increases binary size because the assets are included with `go:embed`. Use the root package alone if CDN assets are acceptable.
+
 ### ReDoc
 
 [ReDoc](https://github.com/Redocly/redoc): 📘 OpenAPI/Swagger-generated API Reference Documentation.
