@@ -3,11 +3,13 @@ package openapidocs
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/labstack/echo/v4"
 	htmltemplate "html/template"
+	"io/fs"
 	"net/http"
 	"path"
 	"strings"
+
+	"github.com/labstack/echo/v4"
 )
 
 // SwaggerUIConfig is the configuration for SwaggerUIDocumentsHandler to generate the OpenAPI documentation with Swagger UI.
@@ -21,19 +23,27 @@ type SwaggerUIConfig struct {
 	// Title is the title of the page.
 	Title string
 	// Template is a template string for rendering the page with html/template.
+	// If empty, CDNSwaggerUITemplate is used.
 	Template string
+	// Assets is an optional filesystem that serves Swagger UI static files
+	// (swagger-ui.css and swagger-ui-bundle.js) under "{pathPrefix}/_assets/*".
+	// When set, SwaggerUIDocuments also registers AssetsHandler.
+	// Prefer github.com/kohkimakimoto/echo-openapidocs/v4/embedded/swaggerui which sets
+	// Assets and Template together.
+	Assets fs.FS
 
 	// DeepLinking is the Swagger UI `deepLinking` configuration.
 	DeepLinking bool
 	// DisplayOperationId is the Swagger UI `DisplayOperationId` configuration.
 	DisplayOperationId bool
 
-	// TODO: Add more Redoc configuration options...
+	// TODO: Add more Swagger UI configuration options...
 }
 
 type swaggerUITemplateParams struct {
 	SwaggerUIConfig
 	BasePath               string
+	AssetsBaseURL          string
 	SwaggerUIConfiguration htmltemplate.JS
 }
 
@@ -48,21 +58,22 @@ var DefaultSwaggerUIConfig = SwaggerUIConfig{
 	Spec:               "",
 	SpecUrl:            "",
 	Title:              "API documentation with Swagger UI",
-	Template:           defaultSwaggerUITemplate,
+	Template:           CDNSwaggerUITemplate,
 	DeepLinking:        false,
 	DisplayOperationId: false,
 }
 
-const defaultSwaggerUITemplate = `<html lang="en">
+// CDNSwaggerUITemplate loads Swagger UI from the CDN (unpkg).
+const CDNSwaggerUITemplate = `<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ .Title }}</title>
-  <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist/swagger-ui.css" />
+  <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5.32.14/swagger-ui.css" />
 </head>
 <body>
   <div id="swagger-ui"></div>
-  <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js" crossorigin></script>
+  <script src="https://unpkg.com/swagger-ui-dist@5.32.14/swagger-ui-bundle.js" crossorigin></script>
   <script>
 	var configuration = {{ .SwaggerUIConfiguration }};
     window.onload = () => {
@@ -73,9 +84,10 @@ const defaultSwaggerUITemplate = `<html lang="en">
 </html>
 `
 
+// SwaggerUIDocumentsHandler returns an echo.HandlerFunc to serve the OpenAPI documentation with Swagger UI.
 func SwaggerUIDocumentsHandler(config SwaggerUIConfig) echo.HandlerFunc {
 	if config.Template == "" {
-		config.Template = DefaultSwaggerUIConfig.Template
+		config.Template = CDNSwaggerUITemplate
 	}
 	if config.Title == "" {
 		config.Title = DefaultSwaggerUIConfig.Title
@@ -128,6 +140,7 @@ func SwaggerUIDocumentsHandler(config SwaggerUIConfig) echo.HandlerFunc {
 		params := swaggerUITemplateParams{
 			SwaggerUIConfig:        config,
 			BasePath:               basePath,
+			AssetsBaseURL:          path.Join(basePath, AssetsPath),
 			SwaggerUIConfiguration: htmltemplate.JS(jsonDate),
 		}
 
@@ -140,6 +153,9 @@ func SwaggerUIDocumentsHandler(config SwaggerUIConfig) echo.HandlerFunc {
 }
 
 // SwaggerUIDocuments registers a handler for serving Swagger UI documents.
+// When config.Assets is set, it also registers AssetsHandler at "{pathPrefix}/_assets/*".
+// If you use SwaggerUIDocumentsHandler directly, register AssetsHandler yourself when using Assets.
 func SwaggerUIDocuments(e *echo.Echo, pathPrefix string, config SwaggerUIConfig) {
+	registerAssets(e, pathPrefix, config.Assets)
 	e.GET(pathPrefix+"*", SwaggerUIDocumentsHandler(config))
 }

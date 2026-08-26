@@ -82,6 +82,22 @@ openapidocs.ElementsDocuments(e, "/docs", openapidocs.ElementsConfig{
 The `ElementsDocuments` function takes a configuration from the `ElementsConfig` struct.
 For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v4#ElementsConfig).
 
+By default, Stoplight Elements JS/CSS are loaded from the CDN. To serve them from your application binary instead, import the optional `embedded/elements` subpackage:
+
+```go
+import (
+	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
+	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/elements"
+)
+
+// Bundled assets are served under /docs/_assets/*
+elements.Documents(e, "/docs", openapidocs.ElementsConfig{
+	SpecUrl: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
+})
+```
+
+Importing `embedded/elements` increases binary size because the assets are included with `go:embed`. Use the root package alone if CDN assets are acceptable. Other generators can be added as separate packages under `embedded/` so each import only pulls in the assets you need.
+
 ### Scalar API Reference
 
 [Scalar API Reference](https://github.com/scalar/scalar): Beautiful API references from OpenAPI/Swagger files ✨
@@ -114,6 +130,22 @@ openapidocs.ScalarDocuments(e, "/docs", openapidocs.ScalarConfig{
 
 The `ScalarDocuments` function takes a configuration from the `ScalarConfig` struct.
 For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v4#ScalarConfig).
+
+By default, Scalar JS is loaded from the CDN. To serve it from your application binary instead, import the optional `embedded/scalar` subpackage:
+
+```go
+import (
+	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
+	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/scalar"
+)
+
+// Bundled assets are served under /docs/_assets/*
+scalar.Documents(e, "/docs", openapidocs.ScalarConfig{
+	SpecUrl: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
+})
+```
+
+Importing `embedded/scalar` increases binary size because the assets are included with `go:embed`. Use the root package alone if CDN assets are acceptable.
 
 ### Swagger UI
 
@@ -148,6 +180,22 @@ openapidocs.SwaggerUIDocuments(e, "/docs", openapidocs.SwaggerUIConfig{
 The `SwaggerUIDocuments` function takes a configuration from the `SwaggerUIConfig` struct.
 For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v4#SwaggerUIConfig).
 
+By default, Swagger UI JS/CSS are loaded from the CDN. To serve them from your application binary instead, import the optional `embedded/swaggerui` subpackage:
+
+```go
+import (
+	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
+	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/swaggerui"
+)
+
+// Bundled assets are served under /docs/_assets/*
+swaggerui.Documents(e, "/docs", openapidocs.SwaggerUIConfig{
+	SpecUrl: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
+})
+```
+
+Importing `embedded/swaggerui` increases binary size because the assets are included with `go:embed`. Use the root package alone if CDN assets are acceptable.
+
 ### ReDoc
 
 [ReDoc](https://github.com/Redocly/redoc): 📘 OpenAPI/Swagger-generated API Reference Documentation.
@@ -180,6 +228,22 @@ openapidocs.RedocDocuments(e, "/docs", openapidocs.RedocConfig{
 
 The `RedocDocuments` function takes a configuration from the `RedocConfig` struct.
 For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v4#RedocConfig).
+
+By default, Redoc JS is loaded from the CDN. To serve it from your application binary instead, import the optional `embedded/redoc` subpackage:
+
+```go
+import (
+	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
+	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/redoc"
+)
+
+// Bundled assets are served under /docs/_assets/*
+redoc.Documents(e, "/docs", openapidocs.RedocConfig{
+	SpecUrl: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
+})
+```
+
+Importing `embedded/redoc` increases binary size because the assets are included with `go:embed`. Use the root package alone if CDN assets are acceptable.
 
 ## Author
 

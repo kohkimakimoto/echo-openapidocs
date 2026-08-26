@@ -5,6 +5,10 @@ import (
 	"log"
 
 	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
+	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/elements"
+	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/redoc"
+	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/scalar"
+	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/swaggerui"
 	"github.com/labstack/echo/v4"
 )
 
@@ -17,7 +21,7 @@ var OpenAPISpecGithub string
 func main() {
 	e := echo.New()
 
-	// ElementsDocuments
+	// ElementsDocuments (CDN assets)
 	openapidocs.ElementsDocuments(e, "/docs/elements/github", openapidocs.ElementsConfig{
 		Spec:  OpenAPISpecGithub,
 		Title: "GitHub v3 REST API",
@@ -27,7 +31,17 @@ func main() {
 		Title:   "OpenAI API",
 	})
 
-	// ScalarDocuments
+	// ElementsDocuments with embedded assets (no CDN)
+	elements.Documents(e, "/docs/elements-embedded/github", openapidocs.ElementsConfig{
+		Spec:  OpenAPISpecGithub,
+		Title: "GitHub v3 REST API (embedded assets)",
+	})
+	elements.Documents(e, "/docs/elements-embedded/openai", openapidocs.ElementsConfig{
+		SpecUrl: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
+		Title:   "OpenAI API (embedded assets)",
+	})
+
+	// ScalarDocuments (CDN assets)
 	openapidocs.ScalarDocuments(e, "/docs/scalar/github", openapidocs.ScalarConfig{
 		Spec:  OpenAPISpecGithub,
 		Title: "GitHub v3 REST API",
@@ -37,7 +51,17 @@ func main() {
 		Title:   "OpenAI API",
 	})
 
-	// SwaggerUIDocuments
+	// ScalarDocuments with embedded assets (no CDN)
+	scalar.Documents(e, "/docs/scalar-embedded/github", openapidocs.ScalarConfig{
+		Spec:  OpenAPISpecGithub,
+		Title: "GitHub v3 REST API (embedded assets)",
+	})
+	scalar.Documents(e, "/docs/scalar-embedded/openai", openapidocs.ScalarConfig{
+		SpecUrl: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
+		Title:   "OpenAI API (embedded assets)",
+	})
+
+	// SwaggerUIDocuments (CDN assets)
 	openapidocs.SwaggerUIDocuments(e, "/docs/swagger-ui/github", openapidocs.SwaggerUIConfig{
 		Spec:  OpenAPISpecGithub,
 		Title: "GitHub v3 REST API",
@@ -47,7 +71,17 @@ func main() {
 		Title:   "OpenAI API",
 	})
 
-	// RedocDocuments
+	// SwaggerUIDocuments with embedded assets (no CDN)
+	swaggerui.Documents(e, "/docs/swagger-ui-embedded/github", openapidocs.SwaggerUIConfig{
+		Spec:  OpenAPISpecGithub,
+		Title: "GitHub v3 REST API (embedded assets)",
+	})
+	swaggerui.Documents(e, "/docs/swagger-ui-embedded/openai", openapidocs.SwaggerUIConfig{
+		SpecUrl: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
+		Title:   "OpenAI API (embedded assets)",
+	})
+
+	// RedocDocuments (CDN assets)
 	openapidocs.RedocDocuments(e, "/docs/redoc/github", openapidocs.RedocConfig{
 		Spec:  OpenAPISpecGithub,
 		Title: "GitHub v3 REST API",
@@ -55,6 +89,16 @@ func main() {
 	openapidocs.RedocDocuments(e, "/docs/redoc/openai", openapidocs.RedocConfig{
 		SpecUrl: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
 		Title:   "OpenAI API",
+	})
+
+	// RedocDocuments with embedded assets (no CDN)
+	redoc.Documents(e, "/docs/redoc-embedded/github", openapidocs.RedocConfig{
+		Spec:  OpenAPISpecGithub,
+		Title: "GitHub v3 REST API (embedded assets)",
+	})
+	redoc.Documents(e, "/docs/redoc-embedded/openai", openapidocs.RedocConfig{
+		SpecUrl: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
+		Title:   "OpenAI API (embedded assets)",
 	})
 
 	// Start the server
