@@ -2,7 +2,7 @@
 
 [![test](https://github.com/kohkimakimoto/echo-openapidocs/actions/workflows/test.yml/badge.svg)](https://github.com/kohkimakimoto/echo-openapidocs/actions/workflows/test.yml)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/kohkimakimoto/echo-openapidocs/blob/master/LICENSE)
-[![Go Reference](https://pkg.go.dev/badge/github.com/kohkimakimoto/echo-openapidocs.svg)](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs)
+[![Go Reference](https://pkg.go.dev/badge/github.com/kohkimakimoto/echo-openapidocs/v4.svg)](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v4)
 
 Echo OpenAPI Docs is a Go library that allows you to use OpenAPI documentation generators in your [Echo](https://github.com/labstack/echo) application.
 It enables you to easily host interactive API documentation based on OpenAPI specifications.
@@ -13,7 +13,7 @@ If you are not familiar with OpenAPI, please visit the [OpenAPI Specification](h
 ## Installation
 
 ```sh
-go get github.com/kohkimakimoto/echo-openapidocs
+go get github.com/kohkimakimoto/echo-openapidocs/v4
 ```
 
 ## Minimum Example
@@ -22,7 +22,7 @@ go get github.com/kohkimakimoto/echo-openapidocs
 package main
 
 import (
-	"github.com/kohkimakimoto/echo-openapidocs"
+	"github.com/kohkimakimoto/echo-openapidocs/v4"
 	"github.com/labstack/echo/v4"
 	"log"
 )
@@ -80,7 +80,7 @@ openapidocs.ElementsDocuments(e, "/docs", openapidocs.ElementsConfig{
 ```
 
 The `ElementsDocuments` function takes a configuration from the `ElementsConfig` struct.
-For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs#ElementsConfig).
+For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v4#ElementsConfig).
 
 ### Scalar API Reference
 
@@ -113,7 +113,7 @@ openapidocs.ScalarDocuments(e, "/docs", openapidocs.ScalarConfig{
 ```
 
 The `ScalarDocuments` function takes a configuration from the `ScalarConfig` struct.
-For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs#ScalarConfig).
+For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v4#ScalarConfig).
 
 ### Swagger UI
 
@@ -146,7 +146,7 @@ openapidocs.SwaggerUIDocuments(e, "/docs", openapidocs.SwaggerUIConfig{
 ```
 
 The `SwaggerUIDocuments` function takes a configuration from the `SwaggerUIConfig` struct.
-For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs#SwaggerUIConfig).
+For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v4#SwaggerUIConfig).
 
 ### ReDoc
 
@@ -179,7 +179,7 @@ openapidocs.RedocDocuments(e, "/docs", openapidocs.RedocConfig{
 ```
 
 The `RedocDocuments` function takes a configuration from the `RedocConfig` struct.
-For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs#RedocConfig).
+For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v4#RedocConfig).
 
 ## Author
 

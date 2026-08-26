@@ -1,4 +1,4 @@
-module github.com/kohkimakimoto/echo-openapidocs
+module github.com/kohkimakimoto/echo-openapidocs/v4
 
 go 1.23.0
 

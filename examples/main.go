@@ -4,7 +4,7 @@ import (
 	_ "embed"
 	"log"
 
-	openapidocs "github.com/kohkimakimoto/echo-openapidocs"
+	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
 	"github.com/labstack/echo/v4"
 )
 
