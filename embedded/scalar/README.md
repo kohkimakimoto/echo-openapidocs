@@ -1,6 +1,6 @@
 # Scalar assets
 
-Go package: `github.com/kohkimakimoto/echo-openapidocs/v4/embedded/scalar`
+Go package: `github.com/kohkimakimoto/echo-openapidocs/v5/embedded/scalar`
 
 Bundled static files from [`@scalar/api-reference`](https://www.npmjs.com/package/@scalar/api-reference).
 

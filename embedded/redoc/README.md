@@ -1,6 +1,6 @@
 # Redoc assets
 
-Go package: `github.com/kohkimakimoto/echo-openapidocs/v4/embedded/redoc`
+Go package: `github.com/kohkimakimoto/echo-openapidocs/v5/embedded/redoc`
 
 Bundled static files from [`redoc`](https://www.npmjs.com/package/redoc).
 

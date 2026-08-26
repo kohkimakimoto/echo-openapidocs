@@ -7,10 +7,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v5"
 
-	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
-	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/scalar"
+	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v5"
+	"github.com/kohkimakimoto/echo-openapidocs/v5/embedded/scalar"
 )
 
 func TestScalarDocuments_CDN(t *testing.T) {

@@ -9,7 +9,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v5"
 )
 
 // ScalarConfig is the configuration for ScalarDocumentsHandler to generate the OpenAPI documentation with Scalar.
@@ -28,7 +28,7 @@ type ScalarConfig struct {
 	// Assets is an optional filesystem that serves Scalar static files
 	// (standalone.js) under "{pathPrefix}/_assets/*".
 	// When set, ScalarDocuments also registers AssetsHandler.
-	// Prefer github.com/kohkimakimoto/echo-openapidocs/v4/embedded/scalar which sets
+	// Prefer github.com/kohkimakimoto/echo-openapidocs/v5/embedded/scalar which sets
 	// Assets and Template together.
 	Assets fs.FS
 
@@ -147,7 +147,7 @@ func ScalarDocumentsHandler(config ScalarConfig) echo.HandlerFunc {
 	}
 
 	pageTmpl := htmltemplate.Must(htmltemplate.New("T").Parse(config.Template))
-	return func(c echo.Context) error {
+	return func(c *echo.Context) error {
 		p := c.Request().URL.Path
 
 		// determine the base path

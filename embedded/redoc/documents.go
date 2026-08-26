@@ -8,8 +8,8 @@ package redoc
 import (
 	"embed"
 
-	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
-	"github.com/labstack/echo/v4"
+	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v5"
+	"github.com/labstack/echo/v5"
 )
 
 //go:embed redoc.standalone.js

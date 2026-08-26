@@ -2,7 +2,7 @@
 
 [![test](https://github.com/kohkimakimoto/echo-openapidocs/actions/workflows/test.yml/badge.svg)](https://github.com/kohkimakimoto/echo-openapidocs/actions/workflows/test.yml)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/kohkimakimoto/echo-openapidocs/blob/master/LICENSE)
-[![Go Reference](https://pkg.go.dev/badge/github.com/kohkimakimoto/echo-openapidocs/v4.svg)](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v4)
+[![Go Reference](https://pkg.go.dev/badge/github.com/kohkimakimoto/echo-openapidocs/v5.svg)](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v5)
 
 Echo OpenAPI Docs is a Go library that allows you to use OpenAPI documentation generators in your [Echo](https://github.com/labstack/echo) application.
 It enables you to easily host interactive API documentation based on OpenAPI specifications.
@@ -13,7 +13,7 @@ If you are not familiar with OpenAPI, please visit the [OpenAPI Specification](h
 ## Installation
 
 ```sh
-go get github.com/kohkimakimoto/echo-openapidocs/v4
+go get github.com/kohkimakimoto/echo-openapidocs/v5
 ```
 
 ## Minimum Example
@@ -22,8 +22,8 @@ go get github.com/kohkimakimoto/echo-openapidocs/v4
 package main
 
 import (
-	"github.com/kohkimakimoto/echo-openapidocs/v4"
-	"github.com/labstack/echo/v4"
+	"github.com/kohkimakimoto/echo-openapidocs/v5"
+	"github.com/labstack/echo/v5"
 	"log"
 )
 
@@ -80,14 +80,14 @@ openapidocs.ElementsDocuments(e, "/docs", openapidocs.ElementsConfig{
 ```
 
 The `ElementsDocuments` function takes a configuration from the `ElementsConfig` struct.
-For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v4#ElementsConfig).
+For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v5#ElementsConfig).
 
 By default, Stoplight Elements JS/CSS are loaded from the CDN. To serve them from your application binary instead, import the optional `embedded/elements` subpackage:
 
 ```go
 import (
-	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
-	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/elements"
+	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v5"
+	"github.com/kohkimakimoto/echo-openapidocs/v5/embedded/elements"
 )
 
 // Bundled assets are served under /docs/_assets/*
@@ -129,14 +129,14 @@ openapidocs.ScalarDocuments(e, "/docs", openapidocs.ScalarConfig{
 ```
 
 The `ScalarDocuments` function takes a configuration from the `ScalarConfig` struct.
-For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v4#ScalarConfig).
+For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v5#ScalarConfig).
 
 By default, Scalar JS is loaded from the CDN. To serve it from your application binary instead, import the optional `embedded/scalar` subpackage:
 
 ```go
 import (
-	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
-	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/scalar"
+	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v5"
+	"github.com/kohkimakimoto/echo-openapidocs/v5/embedded/scalar"
 )
 
 // Bundled assets are served under /docs/_assets/*
@@ -178,14 +178,14 @@ openapidocs.SwaggerUIDocuments(e, "/docs", openapidocs.SwaggerUIConfig{
 ```
 
 The `SwaggerUIDocuments` function takes a configuration from the `SwaggerUIConfig` struct.
-For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v4#SwaggerUIConfig).
+For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v5#SwaggerUIConfig).
 
 By default, Swagger UI JS/CSS are loaded from the CDN. To serve them from your application binary instead, import the optional `embedded/swaggerui` subpackage:
 
 ```go
 import (
-	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
-	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/swaggerui"
+	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v5"
+	"github.com/kohkimakimoto/echo-openapidocs/v5/embedded/swaggerui"
 )
 
 // Bundled assets are served under /docs/_assets/*
@@ -227,14 +227,14 @@ openapidocs.RedocDocuments(e, "/docs", openapidocs.RedocConfig{
 ```
 
 The `RedocDocuments` function takes a configuration from the `RedocConfig` struct.
-For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v4#RedocConfig).
+For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v5#RedocConfig).
 
 By default, Redoc JS is loaded from the CDN. To serve it from your application binary instead, import the optional `embedded/redoc` subpackage:
 
 ```go
 import (
-	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
-	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/redoc"
+	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v5"
+	"github.com/kohkimakimoto/echo-openapidocs/v5/embedded/redoc"
 )
 
 // Bundled assets are served under /docs/_assets/*
