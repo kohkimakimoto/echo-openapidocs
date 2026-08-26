@@ -6,6 +6,7 @@ import (
 
 	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
 	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/elements"
+	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/redoc"
 	"github.com/labstack/echo/v4"
 )
 
@@ -58,7 +59,7 @@ func main() {
 		Title:   "OpenAI API",
 	})
 
-	// RedocDocuments
+	// RedocDocuments (CDN assets)
 	openapidocs.RedocDocuments(e, "/docs/redoc/github", openapidocs.RedocConfig{
 		Spec:  OpenAPISpecGithub,
 		Title: "GitHub v3 REST API",
@@ -66,6 +67,16 @@ func main() {
 	openapidocs.RedocDocuments(e, "/docs/redoc/openai", openapidocs.RedocConfig{
 		SpecUrl: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
 		Title:   "OpenAI API",
+	})
+
+	// RedocDocuments with embedded assets (no CDN)
+	redoc.Documents(e, "/docs/redoc-embedded/github", openapidocs.RedocConfig{
+		Spec:  OpenAPISpecGithub,
+		Title: "GitHub v3 REST API (embedded assets)",
+	})
+	redoc.Documents(e, "/docs/redoc-embedded/openai", openapidocs.RedocConfig{
+		SpecUrl: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
+		Title:   "OpenAI API (embedded assets)",
 	})
 
 	// Start the server

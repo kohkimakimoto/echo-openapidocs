@@ -17,7 +17,7 @@ import (
 var FS embed.FS
 
 // Template loads Stoplight Elements from Assets served by
-// openapidocs.ElementsAssetsHandler under "{pathPrefix}/_assets/*".
+// openapidocs.AssetsHandler under "{pathPrefix}/_assets/*".
 const Template = `<html lang="en">
 <head>
   <meta charset="utf-8">

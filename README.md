@@ -197,6 +197,22 @@ openapidocs.RedocDocuments(e, "/docs", openapidocs.RedocConfig{
 The `RedocDocuments` function takes a configuration from the `RedocConfig` struct.
 For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v4#RedocConfig).
 
+By default, Redoc JS is loaded from the CDN. To serve it from your application binary instead, import the optional `embedded/redoc` subpackage:
+
+```go
+import (
+	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
+	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/redoc"
+)
+
+// Bundled assets are served under /docs/_assets/*
+redoc.Documents(e, "/docs", openapidocs.RedocConfig{
+	SpecUrl: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
+})
+```
+
+Importing `embedded/redoc` increases binary size because the assets are included with `go:embed`. Use the root package alone if CDN assets are acceptable.
+
 ## Author
 
 Kohki Makimoto <kohki.makimoto@gmail.com>
