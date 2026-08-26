@@ -5,6 +5,7 @@ import (
 	"log"
 
 	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
+	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded"
 	"github.com/labstack/echo/v4"
 )
 
@@ -17,7 +18,7 @@ var OpenAPISpecGithub string
 func main() {
 	e := echo.New()
 
-	// ElementsDocuments
+	// ElementsDocuments (CDN assets)
 	openapidocs.ElementsDocuments(e, "/docs/elements/github", openapidocs.ElementsConfig{
 		Spec:  OpenAPISpecGithub,
 		Title: "GitHub v3 REST API",
@@ -25,6 +26,16 @@ func main() {
 	openapidocs.ElementsDocuments(e, "/docs/elements/openai", openapidocs.ElementsConfig{
 		SpecUrl: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
 		Title:   "OpenAI API",
+	})
+
+	// ElementsDocuments with embedded assets (no CDN)
+	embedded.ElementsDocuments(e, "/docs/elements-embedded/github", openapidocs.ElementsConfig{
+		Spec:  OpenAPISpecGithub,
+		Title: "GitHub v3 REST API (embedded assets)",
+	})
+	embedded.ElementsDocuments(e, "/docs/elements-embedded/openai", openapidocs.ElementsConfig{
+		SpecUrl: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
+		Title:   "OpenAI API (embedded assets)",
 	})
 
 	// ScalarDocuments

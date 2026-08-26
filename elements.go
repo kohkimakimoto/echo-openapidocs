@@ -2,11 +2,14 @@ package openapidocs
 
 import (
 	"bytes"
-	"github.com/labstack/echo/v4"
 	htmltemplate "html/template"
+	"io"
+	"io/fs"
 	"net/http"
 	"path"
 	"strings"
+
+	"github.com/labstack/echo/v4"
 )
 
 // ElementsConfig is the configuration for ElementsDocumentsHandler to generate the OpenAPI documentation with Stoplight Elements.
@@ -20,7 +23,14 @@ type ElementsConfig struct {
 	// Title is the title of the page.
 	Title string
 	// Template is a template string for rendering the page with html/template.
+	// If empty, CDNElementsTemplate is used.
 	Template string
+	// Assets is an optional filesystem that serves Stoplight Elements static files
+	// (web-components.min.js and styles.min.css) under "{pathPrefix}/_assets/*".
+	// When set, ElementsDocuments also registers ElementsAssetsHandler.
+	// Prefer github.com/kohkimakimoto/echo-openapidocs/v4/embedded which sets Assets
+	// and Template together.
+	Assets fs.FS
 
 	// Router is the Elements `router` configuration.
 	Router ElementsRouter
@@ -45,6 +55,7 @@ type ElementsConfig struct {
 type elementsTemplateParams struct {
 	ElementsConfig
 	BasePath          string
+	AssetsBaseURL     string
 	ApiDescriptionUrl string
 }
 
@@ -76,7 +87,7 @@ var DefaultElementsConfig = ElementsConfig{
 	Spec:                   "",
 	SpecUrl:                "",
 	Title:                  "API documentation with Stoplight Elements",
-	Template:               defaultElementsTemplate,
+	Template:               CDNElementsTemplate,
 	Router:                 ElementsRouterHistory,
 	Layout:                 ElementsLayoutSidebar,
 	HideInternal:           false,
@@ -88,13 +99,14 @@ var DefaultElementsConfig = ElementsConfig{
 	Logo:                   "",
 }
 
-const defaultElementsTemplate = `<html lang="en">
+// CDNElementsTemplate loads Stoplight Elements from the CDN (unpkg).
+const CDNElementsTemplate = `<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ .Title }}</title>
-  <script src="https://unpkg.com/@stoplight/elements/web-components.min.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/@stoplight/elements/styles.min.css">
+  <script src="https://unpkg.com/@stoplight/elements@9.0.24/web-components.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@stoplight/elements@9.0.24/styles.min.css">
 </head>
 <body>
   <elements-api
@@ -130,10 +142,65 @@ const defaultElementsTemplate = `<html lang="en">
 </html>
 `
 
+// ElementsAssetsPath is the URL path segment used to serve ElementsConfig.Assets.
+// The leading underscore reduces the chance of colliding with OpenAPI document paths.
+const ElementsAssetsPath = "_assets"
+
+// ElementsAssetsHandler returns an echo.HandlerFunc that serves static files from filesystem
+// under the request path after pathPrefix (typically "{docsPrefix}/_assets").
+func ElementsAssetsHandler(filesystem fs.FS) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		name := c.Param("*")
+		name = strings.TrimPrefix(name, "/")
+		if name == "" || strings.Contains(name, "..") {
+			return echo.ErrNotFound
+		}
+
+		f, err := filesystem.Open(name)
+		if err != nil {
+			return echo.ErrNotFound
+		}
+		defer f.Close()
+
+		stat, err := f.Stat()
+		if err != nil {
+			return err
+		}
+		if stat.IsDir() {
+			return echo.ErrNotFound
+		}
+
+		rs, ok := f.(io.ReadSeeker)
+		if !ok {
+			b, err := io.ReadAll(f)
+			if err != nil {
+				return err
+			}
+			return c.Blob(http.StatusOK, contentTypeByExt(name), b)
+		}
+
+		http.ServeContent(c.Response(), c.Request(), stat.Name(), stat.ModTime(), rs)
+		return nil
+	}
+}
+
+func contentTypeByExt(name string) string {
+	switch strings.ToLower(path.Ext(name)) {
+	case ".js":
+		return "application/javascript; charset=utf-8"
+	case ".css":
+		return "text/css; charset=utf-8"
+	case ".map":
+		return "application/json; charset=utf-8"
+	default:
+		return "application/octet-stream"
+	}
+}
+
 // ElementsDocumentsHandler returns an echo.HandlerFunc to serve the OpenAPI documentation with Stoplight Elements.
 func ElementsDocumentsHandler(config ElementsConfig) echo.HandlerFunc {
 	if config.Template == "" {
-		config.Template = DefaultElementsConfig.Template
+		config.Template = CDNElementsTemplate
 	}
 	if config.Router == "" {
 		config.Router = DefaultElementsConfig.Router
@@ -183,6 +250,7 @@ func ElementsDocumentsHandler(config ElementsConfig) echo.HandlerFunc {
 		params := elementsTemplateParams{
 			ElementsConfig:    config,
 			BasePath:          basePath,
+			AssetsBaseURL:     path.Join(basePath, ElementsAssetsPath),
 			ApiDescriptionUrl: specUrl,
 		}
 
@@ -196,6 +264,12 @@ func ElementsDocumentsHandler(config ElementsConfig) echo.HandlerFunc {
 }
 
 // ElementsDocuments registers a handler to serve the OpenAPI documentation with Stoplight Elements.
+// When config.Assets is set, it also registers ElementsAssetsHandler at "{pathPrefix}/_assets/*".
+// If you use ElementsDocumentsHandler directly, register ElementsAssetsHandler yourself when using Assets.
 func ElementsDocuments(e *echo.Echo, pathPrefix string, config ElementsConfig) {
+	if config.Assets != nil {
+		assetsPrefix := strings.TrimSuffix(pathPrefix, "/") + "/" + ElementsAssetsPath + "/"
+		e.GET(assetsPrefix+"*", ElementsAssetsHandler(config.Assets))
+	}
 	e.GET(pathPrefix+"*", ElementsDocumentsHandler(config))
 }

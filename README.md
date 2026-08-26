@@ -82,6 +82,22 @@ openapidocs.ElementsDocuments(e, "/docs", openapidocs.ElementsConfig{
 The `ElementsDocuments` function takes a configuration from the `ElementsConfig` struct.
 For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v4#ElementsConfig).
 
+By default, Stoplight Elements JS/CSS are loaded from the CDN. To serve them from your application binary instead, import the optional `embedded` subpackage:
+
+```go
+import (
+	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
+	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded"
+)
+
+// Bundled assets are served under /docs/_assets/*
+embedded.ElementsDocuments(e, "/docs", openapidocs.ElementsConfig{
+	SpecUrl: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
+})
+```
+
+Importing `embedded` increases binary size because the assets are included with `go:embed`. Use the root package alone if CDN assets are acceptable.
+
 ### Scalar API Reference
 
 [Scalar API Reference](https://github.com/scalar/scalar): Beautiful API references from OpenAPI/Swagger files ✨
