@@ -8,7 +8,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v5"
 )
 
 // ElementsConfig is the configuration for ElementsDocumentsHandler to generate the OpenAPI documentation with Stoplight Elements.
@@ -27,7 +27,7 @@ type ElementsConfig struct {
 	// Assets is an optional filesystem that serves Stoplight Elements static files
 	// (web-components.min.js and styles.min.css) under "{pathPrefix}/_assets/*".
 	// When set, ElementsDocuments also registers AssetsHandler.
-	// Prefer github.com/kohkimakimoto/echo-openapidocs/v4/embedded/elements which sets
+	// Prefer github.com/kohkimakimoto/echo-openapidocs/v5/embedded/elements which sets
 	// Assets and Template together.
 	Assets fs.FS
 
@@ -169,7 +169,7 @@ func ElementsDocumentsHandler(config ElementsConfig) echo.HandlerFunc {
 
 	pageTmpl := htmltemplate.Must(htmltemplate.New("T").Parse(config.Template))
 
-	return func(c echo.Context) error {
+	return func(c *echo.Context) error {
 		p := c.Request().URL.Path
 
 		// determine the base path

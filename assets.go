@@ -7,7 +7,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v5"
 )
 
 // AssetsPath is the URL path segment used to serve Config.Assets.
@@ -17,7 +17,7 @@ const AssetsPath = "_assets"
 // AssetsHandler returns an echo.HandlerFunc that serves static files from filesystem
 // under the request path after pathPrefix (typically "{docsPrefix}/_assets").
 func AssetsHandler(filesystem fs.FS) echo.HandlerFunc {
-	return func(c echo.Context) error {
+	return func(c *echo.Context) error {
 		name := c.Param("*")
 		name = strings.TrimPrefix(name, "/")
 		if name == "" || strings.Contains(name, "..") {

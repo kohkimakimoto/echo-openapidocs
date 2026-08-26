@@ -4,12 +4,12 @@ import (
 	_ "embed"
 	"log"
 
-	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
-	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/elements"
-	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/redoc"
-	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/scalar"
-	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/swaggerui"
-	"github.com/labstack/echo/v4"
+	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v5"
+	"github.com/kohkimakimoto/echo-openapidocs/v5/embedded/elements"
+	"github.com/kohkimakimoto/echo-openapidocs/v5/embedded/redoc"
+	"github.com/kohkimakimoto/echo-openapidocs/v5/embedded/scalar"
+	"github.com/kohkimakimoto/echo-openapidocs/v5/embedded/swaggerui"
+	"github.com/labstack/echo/v5"
 )
 
 // OpenAPISpecGithub is the OpenAPI specifications for GitHub v3 REST API.

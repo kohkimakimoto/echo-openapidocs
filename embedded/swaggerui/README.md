@@ -1,6 +1,6 @@
 # Swagger UI assets
 
-Go package: `github.com/kohkimakimoto/echo-openapidocs/v4/embedded/swaggerui`
+Go package: `github.com/kohkimakimoto/echo-openapidocs/v5/embedded/swaggerui`
 
 Bundled static files from [`swagger-ui-dist`](https://www.npmjs.com/package/swagger-ui-dist).
 
