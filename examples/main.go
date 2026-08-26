@@ -5,7 +5,7 @@ import (
 	"log"
 
 	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
-	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded"
+	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/elements"
 	"github.com/labstack/echo/v4"
 )
 
@@ -29,11 +29,11 @@ func main() {
 	})
 
 	// ElementsDocuments with embedded assets (no CDN)
-	embedded.ElementsDocuments(e, "/docs/elements-embedded/github", openapidocs.ElementsConfig{
+	elements.Documents(e, "/docs/elements-embedded/github", openapidocs.ElementsConfig{
 		Spec:  OpenAPISpecGithub,
 		Title: "GitHub v3 REST API (embedded assets)",
 	})
-	embedded.ElementsDocuments(e, "/docs/elements-embedded/openai", openapidocs.ElementsConfig{
+	elements.Documents(e, "/docs/elements-embedded/openai", openapidocs.ElementsConfig{
 		SpecUrl: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
 		Title:   "OpenAI API (embedded assets)",
 	})

@@ -28,8 +28,8 @@ type ElementsConfig struct {
 	// Assets is an optional filesystem that serves Stoplight Elements static files
 	// (web-components.min.js and styles.min.css) under "{pathPrefix}/_assets/*".
 	// When set, ElementsDocuments also registers ElementsAssetsHandler.
-	// Prefer github.com/kohkimakimoto/echo-openapidocs/v4/embedded which sets Assets
-	// and Template together.
+	// Prefer github.com/kohkimakimoto/echo-openapidocs/v4/embedded/elements which sets
+	// Assets and Template together.
 	Assets fs.FS
 
 	// Router is the Elements `router` configuration.

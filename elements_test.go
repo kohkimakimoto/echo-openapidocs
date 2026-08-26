@@ -10,7 +10,7 @@ import (
 	"github.com/labstack/echo/v4"
 
 	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
-	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded"
+	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/elements"
 )
 
 func TestElementsDocuments_CDN(t *testing.T) {
@@ -38,7 +38,7 @@ func TestElementsDocuments_CDN(t *testing.T) {
 
 func TestElementsDocuments_Embedded(t *testing.T) {
 	e := echo.New()
-	embedded.ElementsDocuments(e, "/docs", openapidocs.ElementsConfig{
+	elements.Documents(e, "/docs", openapidocs.ElementsConfig{
 		SpecUrl: "https://example.com/openapi.yaml",
 		Title:   "Test API",
 	})
@@ -79,8 +79,8 @@ func TestElementsAssetsHandler_NotFound(t *testing.T) {
 	e := echo.New()
 	openapidocs.ElementsDocuments(e, "/docs", openapidocs.ElementsConfig{
 		SpecUrl:  "https://example.com/openapi.yaml",
-		Assets:   embedded.Elements,
-		Template: embedded.ElementsTemplate,
+		Assets:   elements.FS,
+		Template: elements.Template,
 	})
 
 	req := httptest.NewRequest(http.MethodGet, "/docs/_assets/missing.js", nil)
