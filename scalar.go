@@ -3,11 +3,13 @@ package openapidocs
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/labstack/echo/v4"
 	htmltemplate "html/template"
+	"io/fs"
 	"net/http"
 	"path"
 	"strings"
+
+	"github.com/labstack/echo/v4"
 )
 
 // ScalarConfig is the configuration for ScalarDocumentsHandler to generate the OpenAPI documentation with Scalar.
@@ -21,7 +23,14 @@ type ScalarConfig struct {
 	// Title is the title of the page.
 	Title string
 	// Template is a template string for rendering the page with html/template.
+	// If empty, CDNScalarTemplate is used.
 	Template string
+	// Assets is an optional filesystem that serves Scalar static files
+	// (standalone.js) under "{pathPrefix}/_assets/*".
+	// When set, ScalarDocuments also registers AssetsHandler.
+	// Prefer github.com/kohkimakimoto/echo-openapidocs/v4/embedded/scalar which sets
+	// Assets and Template together.
+	Assets fs.FS
 
 	// IsEditable is the Scalar `isEditable` configuration.
 	IsEditable bool
@@ -44,6 +53,7 @@ type ScalarConfig struct {
 type scalarTemplateParams struct {
 	ScalarConfig
 	BasePath                  string
+	AssetsBaseURL             string
 	ApiReferenceConfiguration htmltemplate.JS
 }
 
@@ -90,7 +100,7 @@ var DefaultScalarConfig = ScalarConfig{
 	Spec:         "",
 	SpecUrl:      "",
 	Title:        "API documentation with Scalar",
-	Template:     defaultScalarTemplate,
+	Template:     CDNScalarTemplate,
 	IsEditable:   false,
 	ProxyUrl:     "",
 	DarkMode:     false,
@@ -100,7 +110,8 @@ var DefaultScalarConfig = ScalarConfig{
 	SearchHotKey: "",
 }
 
-const defaultScalarTemplate = `<html lang="en">
+// CDNScalarTemplate loads Scalar from the CDN (jsDelivr).
+const CDNScalarTemplate = `<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -113,7 +124,7 @@ const defaultScalarTemplate = `<html lang="en">
     var apiReference = document.getElementById('api-reference');
     apiReference.dataset.configuration = JSON.stringify(configuration);
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.66.1"></script>
 </body>
 </html>
 `
@@ -121,7 +132,7 @@ const defaultScalarTemplate = `<html lang="en">
 // ScalarDocumentsHandler returns an echo.HandlerFunc to serve the OpenAPI documentation with Scalar.
 func ScalarDocumentsHandler(config ScalarConfig) echo.HandlerFunc {
 	if config.Template == "" {
-		config.Template = DefaultScalarConfig.Template
+		config.Template = CDNScalarTemplate
 	}
 	if config.Title == "" {
 		config.Title = DefaultScalarConfig.Title
@@ -179,6 +190,7 @@ func ScalarDocumentsHandler(config ScalarConfig) echo.HandlerFunc {
 		params := scalarTemplateParams{
 			ScalarConfig:              config,
 			BasePath:                  basePath,
+			AssetsBaseURL:             path.Join(basePath, AssetsPath),
 			ApiReferenceConfiguration: htmltemplate.JS(jsonDate),
 		}
 
@@ -191,6 +203,9 @@ func ScalarDocumentsHandler(config ScalarConfig) echo.HandlerFunc {
 }
 
 // ScalarDocuments registers a handler to serve the OpenAPI documentation with Scalar.
+// When config.Assets is set, it also registers AssetsHandler at "{pathPrefix}/_assets/*".
+// If you use ScalarDocumentsHandler directly, register AssetsHandler yourself when using Assets.
 func ScalarDocuments(e *echo.Echo, pathPrefix string, config ScalarConfig) {
+	registerAssets(e, pathPrefix, config.Assets)
 	e.GET(pathPrefix+"*", ScalarDocumentsHandler(config))
 }

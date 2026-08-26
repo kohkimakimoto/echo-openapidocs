@@ -131,6 +131,22 @@ openapidocs.ScalarDocuments(e, "/docs", openapidocs.ScalarConfig{
 The `ScalarDocuments` function takes a configuration from the `ScalarConfig` struct.
 For more details, please refer to the documentation [here](https://pkg.go.dev/github.com/kohkimakimoto/echo-openapidocs/v4#ScalarConfig).
 
+By default, Scalar JS is loaded from the CDN. To serve it from your application binary instead, import the optional `embedded/scalar` subpackage:
+
+```go
+import (
+	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
+	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/scalar"
+)
+
+// Bundled assets are served under /docs/_assets/*
+scalar.Documents(e, "/docs", openapidocs.ScalarConfig{
+	SpecUrl: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
+})
+```
+
+Importing `embedded/scalar` increases binary size because the assets are included with `go:embed`. Use the root package alone if CDN assets are acceptable.
+
 ### Swagger UI
 
 [Swagger UI](https://github.com/swagger-api/swagger-ui): Swagger UI is a collection of HTML, JavaScript, and CSS assets that dynamically generate beautiful documentation from a Swagger-compliant API.

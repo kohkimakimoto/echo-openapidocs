@@ -7,6 +7,7 @@ import (
 	openapidocs "github.com/kohkimakimoto/echo-openapidocs/v4"
 	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/elements"
 	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/redoc"
+	"github.com/kohkimakimoto/echo-openapidocs/v4/embedded/scalar"
 	"github.com/labstack/echo/v4"
 )
 
@@ -39,7 +40,7 @@ func main() {
 		Title:   "OpenAI API (embedded assets)",
 	})
 
-	// ScalarDocuments
+	// ScalarDocuments (CDN assets)
 	openapidocs.ScalarDocuments(e, "/docs/scalar/github", openapidocs.ScalarConfig{
 		Spec:  OpenAPISpecGithub,
 		Title: "GitHub v3 REST API",
@@ -47,6 +48,16 @@ func main() {
 	openapidocs.ScalarDocuments(e, "/docs/scalar/openai", openapidocs.ScalarConfig{
 		SpecUrl: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
 		Title:   "OpenAI API",
+	})
+
+	// ScalarDocuments with embedded assets (no CDN)
+	scalar.Documents(e, "/docs/scalar-embedded/github", openapidocs.ScalarConfig{
+		Spec:  OpenAPISpecGithub,
+		Title: "GitHub v3 REST API (embedded assets)",
+	})
+	scalar.Documents(e, "/docs/scalar-embedded/openai", openapidocs.ScalarConfig{
+		SpecUrl: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
+		Title:   "OpenAI API (embedded assets)",
 	})
 
 	// SwaggerUIDocuments
